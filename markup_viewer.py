@@ -1,3 +1,4 @@
+from config import config
 import xml.etree.ElementTree as ET
 import json
 import pandas as pd
@@ -84,8 +85,13 @@ def make_onysoft_weekly_report_ppt(df):
         en_date = datetime.datetime.strptime(end_date_week, '%Y%m%d')
         d = datetime.timedelta(days=4)
         st_date = en_date - d
-        st = str(st_date).split(" ")[0].replace("2024-", "'24").replace("2023-", "'23").replace("-", "")
-        en = str(en_date).split(" ")[0].replace("2024-", "'24").replace("2023-", "'23").replace("-", "")
+        st = str(st_date).split(" ")[0].replace(config.REPLACE_FORM['this_year'],
+                                                config.REPLACE_FORM['replace_this_year']).replace(
+            config.REPLACE_FORM['last_year'], config.REPLACE_FORM['replace_last_year']).replace("-", "")
+
+        en = str(en_date).split(" ")[0].replace(config.REPLACE_FORM['this_year'],
+                                                config.REPLACE_FORM['replace_this_year']).replace(
+            config.REPLACE_FORM['last_year'], config.REPLACE_FORM['replace_last_year']).replace("-", "")
 
         # if en[1:] == '240802' or en[1:] == '240811':
         #     print(st + " ~ " + en)
@@ -115,7 +121,7 @@ def make_onysoft_weekly_report_ppt(df):
             else:
                 replacements['detail' + str(cnt - 1)] = replacements['detail' + str(cnt - 1)] + f"\n{rep_line.rstrip()}"
 
-        fl_nm = f"output/weekly_report/[주간보고] 어니소프트 기업연구소_{en[1:]}"
+        fl_nm = f"{config.WEEKLY_REPORT_FILE_NAME}{en[1:]}"
         shutil.copyfile('input/weekly_report_template.pptx', f"{fl_nm}.pptx")
 
         unzip_target_file(fl_nm)
