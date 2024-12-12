@@ -14,3 +14,4 @@ Viewer for xml, html, json, dictionary etc
     conda activate markup_viewer 
     
     conda install anaconda::pandas==2.2.3
+    conda install conda-forge::python-pptx==1.0.2
