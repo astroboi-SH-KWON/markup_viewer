@@ -29,9 +29,6 @@ if __name__ == '__main__':
 
     json_v = json_viewer()
     json_dict = json_v.get_json('input/mGFQyyXX_2024.json')
-    json_v.parse_weekly_report_by_username(json_dict, username)
-
-
-
-
-
+    res_df = json_v.parse_weekly_report_by_username(json_dict, username)
+    print(res_df)
+    res_df.to_excel(f'output/weekly_report_{username}_{st_time}.xlsx')

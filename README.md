@@ -13,4 +13,4 @@ Viewer for xml, html, json, dictionary etc
     conda create -n markup_viewer python==3.9.20
     conda activate markup_viewer 
     
-    conda install conda-forge::xlsxwriter==3.2.0
+    conda install anaconda::pandas==2.2.3

@@ -1,7 +1,6 @@
 import xml.etree.ElementTree as ET
 import json
-import xlsxwriter
-import time
+import pandas as pd
 
 
 class xml_viewer:
@@ -36,31 +35,10 @@ class json_viewer:
             raise Exception
 
     def parse_weekly_report_by_username(self, trello_json, username):
-        st_time = time.strftime('%Y%m%d_%H_%M')
-
-        idx = 2
-        # Create a workbook and add a worksheet
-        workbook = xlsxwriter.Workbook(f"output/weekly_report_{username}_{st_time}.xlsx")
-        worksheet = workbook.add_worksheet()
-
-        # Add a bold format to use to highlight cells.
-        bold = workbook.add_format({'bold': True})
-
-        # Text with formatting.
-        worksheet.write('A1', "날짜", bold)
-        worksheet.write('B1', "주간보고", bold)
-        worksheet.write('C1', "비고", bold)
-
+        tmp_list = []
         for val in trello_json['actions']:
             if val['memberCreator']['username'] == username:
                 if 'text' in val['data']:
-                    print(f"[주간보고] 어니소프트 기업연구소_{str(val['date']).split('T')[0].replace('-', '')}")
-                    print(f"date:{val['data']['card']['name']}")
-                    print(f"{val['data']['text']}\n\n")
-
-                    worksheet.write(f'A{idx}', val['data']['card']['name'])
-                    worksheet.write(f'B{idx}', val['data']['text'])
-                    worksheet.write(f'C{idx}', f"_{str(val['date']).split('T')[0].replace('-', '')}")
-                    idx += 1
-        # Close the workbook
-        workbook.close()
+                    tmp_list.append([str(val['date']).split('T')[0].replace('-', ''), val['data']['card']['name'],
+                                     val['data']['text']])
+        return pd.DataFrame(tmp_list, columns=['DATE', 'WEEK', 'REPORT'])
