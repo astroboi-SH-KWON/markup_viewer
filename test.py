@@ -1,6 +1,7 @@
-from markup_viewer import xml_viewer
+from markup_viewer import xml_viewer, json_viewer
 import glob
-import json
+from pptx import Presentation
+import time
 
 
 def get_file_list(f_pattern):
@@ -22,15 +23,15 @@ def view_xml(file_path, n=1):
             print(i)
 
 
-def view_json(file_path):
-    with open(file_path, 'r') as file:
-        data = json.load(file)
-        print(data)
-
-
 if __name__ == '__main__':
-    # view_xml("./input/*.xml", n=2)
-    # view_xml("./input/*.ts", n=1)
-    view_json("input/mGFQyyXX_2024.json")
+    username = 'terry007x'
+    st_time = time.strftime('%Y%m%d_%H_%M')
+
+    json_v = json_viewer()
+    json_dict = json_v.get_json('input/mGFQyyXX_2024.json')
+    json_v.parse_weekly_report_by_username(json_dict, username)
+
+
+
 
 
